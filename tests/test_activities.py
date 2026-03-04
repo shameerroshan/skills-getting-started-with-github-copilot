@@ -8,8 +8,11 @@ class TestGetActivities:
 
     def test_get_activities_returns_all_activities(self, client, reset_activities):
         """Test that GET /activities returns all activities"""
+        # Arrange: nothing special beyond fixture setup
+        # Act
         response = client.get("/activities")
         
+        # Assert
         assert response.status_code == 200
         activities_data = response.json()
         
@@ -26,9 +29,11 @@ class TestGetActivities:
 
     def test_activity_contains_required_fields(self, client, reset_activities):
         """Test that each activity contains required fields"""
+        # Act
         response = client.get("/activities")
         activities_data = response.json()
         
+        # Assert
         # Check Chess Club as representative activity
         chess_club = activities_data["Chess Club"]
         
@@ -39,27 +44,33 @@ class TestGetActivities:
 
     def test_activity_participants_is_list(self, client, reset_activities):
         """Test that participants field is a list"""
+        # Act
         response = client.get("/activities")
         activities_data = response.json()
         
+        # Assert
         for activity_name, activity in activities_data.items():
             assert isinstance(activity["participants"], list), \
                 f"{activity_name} participants should be a list"
 
     def test_activity_max_participants_is_integer(self, client, reset_activities):
         """Test that max_participants is an integer"""
+        # Act
         response = client.get("/activities")
         activities_data = response.json()
         
+        # Assert
         for activity_name, activity in activities_data.items():
             assert isinstance(activity["max_participants"], int), \
                 f"{activity_name} max_participants should be an integer"
 
     def test_get_activities_has_correct_initial_participants(self, client, reset_activities):
         """Test that activities have expected initial participants"""
+        # Act
         response = client.get("/activities")
         activities_data = response.json()
         
+        # Assert
         # Chess Club should have 2 initial participants
         assert len(activities_data["Chess Club"]["participants"]) == 2
         assert "michael@mergington.edu" in activities_data["Chess Club"]["participants"]
